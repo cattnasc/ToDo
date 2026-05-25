@@ -1,4 +1,4 @@
-import express from "express"
+import express, { request, response } from "express"
 import mysql2 from "mysql2"
 
 const app = express()
@@ -24,6 +24,23 @@ app.post("/create-task", (request, response) => {
 
         response.status(201).json({
             message: "Tarefa criada com sucesso"
+        })
+    })
+})
+
+app.delete("/delete-task/:id", (request, response) => {
+    const { id } = request.params
+
+    const deleteCommand = "DELETE FROM ToDo_CatarinaPalomares WHERE id=?"
+
+    sql.query(deleteCommand, [id], (error) => {
+        if(error){
+            console.log(error)
+            return
+        }
+
+        response.status(201).json({
+            message: "Tarefa apagada com sucesso"
         })
     })
 })
