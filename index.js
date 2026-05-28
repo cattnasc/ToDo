@@ -5,12 +5,6 @@ const app = express()
 
 app.use(express.json())
 
-app.get("/", (request, response)=> {
-    response.json({
-        message: "Servidor do ToDo"
-    })
-})
-
 app.post("/create-task", (request, response) => {
     const {description, status} = request.body
 
@@ -42,6 +36,45 @@ app.delete("/delete-task/:id", (request, response) => {
         response.status(201).json({
             message: "Tarefa apagada com sucesso"
         })
+    })
+})
+
+app.get("/all-tasks", (request, response) => {
+    const selectCommand = "SELECT * FROM ToDo_CatarinaPalomares"
+
+    sql.query(selectCommand, (error, data) => {
+        if (error) {
+            console.log(error)
+            return
+        }
+
+        response.json(data)
+    })
+})
+
+app.get("/complete", (request, response) => {
+    const selectCommand = "SELECT * FROM ToDo_CatarinaPalomares WHERE status = 1"
+
+    sql.query(selectCommand, (error, data) => {
+        if (error) {
+            console.log(error)
+            return
+        }
+
+        response.json(data)
+    })
+})
+
+app.get("/incomplete", (request, response) => {
+    const selectCommand = "SELECT * FROM ToDo_CatarinaPalomares WHERE status = 0"
+
+    sql.query(selectCommand, (error, data) => {
+        if (error) {
+            console.log(error)
+            return
+        }
+
+        response.json(data)
     })
 })
 
